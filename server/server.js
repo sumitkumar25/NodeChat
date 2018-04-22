@@ -11,12 +11,27 @@ var io = socketIO(server);
 app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
+    socket.broadcast.emit('newMessage', {
+        from: 'Admin',
+        text: 'new user joined',
+        createdAt: new Date().getTime()
+    });
+    socket.emit('newMessage', {
+        from: 'Admin',
+        text: 'welcome to chat',
+        createdAt: new Date().getTime()
+    });
     socket.on('createMessage', function(msg) {
         io.emit('newMessage', {
-            from: msg.from,
-            text: msg.text,
-            createdAt: new Date().getTime()
-        })
+                from: msg.from,
+                text: msg.text,
+                createdAt: new Date().getTime()
+            })
+            // socket.broadcast.emit('newMessage', {
+            //     from: msg.from,
+            //     text: msg.text,
+            //     createdAt: new Date().getTime()
+            // })
     });
 });
 server.listen(port, () => {
