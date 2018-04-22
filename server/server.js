@@ -11,7 +11,14 @@ var io = socketIO(server);
 app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
-    console.log(socket);
+    socket.emit('newMessage', {
+        'from': 'sumit',
+        'text': 'tadaaaaa',
+        'createdAt': new Date().toDateString()
+    });
+    socket.on('createMessage', function(msg) {
+        console.log('create message to be emitted', msg);
+    });
 });
 server.listen(port, () => {
     console.log('started at port ' + port);
