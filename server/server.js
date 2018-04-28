@@ -8,6 +8,7 @@ const port = process.env.PORT || 3000;
 var app = express();
 var server = http.createServer(app);
 var io = socketIO(server);
+var { generateMessage } = require('./utils/message');
 app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
@@ -29,6 +30,9 @@ io.on('connection', (socket) => {
         });
         callback();
     });
+    socket.on('createLocMessage', function(coords) {
+        io.emit('newMessage', generateMessage('Admin', `${coords.lat} ${coords.long}`))
+    })
 });
 server.listen(port, () => {
     console.log('started at port ' + port);
