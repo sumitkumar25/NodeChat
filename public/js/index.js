@@ -4,9 +4,15 @@ socket.on('connect', function(e) {
     console.log('connected', e);
 });
 socket.on('newMessage', function(msg) {
-    console.log('new message payload', msg);
     var msg = $('<li class="message">' + msg.from + ' - ' + msg.text + '</li>')
     $('#messages').append(msg);
+});
+socket.on('newlocationMessage', function(msg) {
+    var li = $('<li class="message"></li>');
+    var a = $(`<a target="_black" href="${msg.url}">My current location</a>`);
+    li.text(`${msg.from}`);
+    li.append(a);
+    $('#messages').append(li);
 });
 
 $('#message-form').on('submit', function(e) {
