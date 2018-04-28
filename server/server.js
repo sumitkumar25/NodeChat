@@ -12,22 +12,10 @@ var { generateMessage, generateLocationMessage } = require('./utils/message');
 app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
-    socket.broadcast.emit('newMessage', {
-        from: 'Admin',
-        text: 'new user joined',
-        createdAt: new Date().getTime()
-    });
-    socket.emit('newMessage', {
-        from: 'Admin',
-        text: 'welcome to chat',
-        createdAt: new Date().getTime()
-    });
+    socket.broadcast.emit('newMessage', generateMessage('Admin', 'new user joined'));
+    socket.emit('newMessage', generateMessage('Admin', 'welcome to node chat'));
     socket.on('createMessage', function(msg, callback) {
-        io.emit('newMessage', {
-            from: msg.from,
-            text: msg.text,
-            createdAt: new Date().getTime()
-        });
+        io.emit('newMessage', generateMessage(msg.from, msg.text));
         callback();
     });
     socket.on('createLocMessage', function(coords) {

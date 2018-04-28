@@ -4,13 +4,15 @@ socket.on('connect', function(e) {
     console.log('connected', e);
 });
 socket.on('newMessage', function(msg) {
-    var msg = $('<li class="message">' + msg.from + ' - ' + msg.text + '</li>')
+    var time = moment(msg.createdAt).format('h:mm a');
+    var msg = $('<li class="message">' + msg.from + ' ' + time + ' - ' + msg.text + '</li>')
     $('#messages').append(msg);
 });
 socket.on('newlocationMessage', function(msg) {
+    var time = moment(msg.createdAt).format('h:mm a');
     var li = $('<li class="message"></li>');
     var a = $(`<a target="_black" href="${msg.url}">My current location</a>`);
-    li.text(`${msg.from}`);
+    li.text(`${msg.from} ${time}`);
     li.append(a);
     $('#messages').append(li);
 });
