@@ -12,6 +12,7 @@ socket.on('newMessage', function(msg) {
         message: msg.text
     });
     $('#messages').append(msg);
+    scrollToBottom();
 });
 socket.on('newlocationMessage', function(msg) {
     var time = moment(msg.createdAt).format('h:mm a');
@@ -22,6 +23,7 @@ socket.on('newlocationMessage', function(msg) {
         url: msg.url
     });
     $('#messages').append(msg);
+    scrollToBottom();
 });
 
 $('#message-form').on('submit', function(e) {
@@ -49,4 +51,17 @@ locBtn.on('click', function(e) {
     }, function() {
         locBtn.removeAttr('disabled').text('share location');
     });
-})
+});
+
+function scrollToBottom() {
+    var messages = $('#messages');
+    var newMessage = messages.children('li:last-child');
+    var clientH = messages.prop('clientHeight');
+    var scrollTop = messages.prop('scrollTop');
+    var scrollH = messages.prop('scrollHeight');
+    var newMsgH = newMessage.innerHeight();
+    var lastMsgH = newMessage.prev().innerHeight();
+    if (clientH + scrollTop + newMsgH + lastMsgH >= scrollH) {
+        messages.scrollTop(scrollH);
+    }
+}
