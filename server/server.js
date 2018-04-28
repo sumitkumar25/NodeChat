@@ -21,17 +21,13 @@ io.on('connection', (socket) => {
         text: 'welcome to chat',
         createdAt: new Date().getTime()
     });
-    socket.on('createMessage', function(msg) {
+    socket.on('createMessage', function(msg, callback) {
         io.emit('newMessage', {
-                from: msg.from,
-                text: msg.text,
-                createdAt: new Date().getTime()
-            })
-            // socket.broadcast.emit('newMessage', {
-            //     from: msg.from,
-            //     text: msg.text,
-            //     createdAt: new Date().getTime()
-            // })
+            from: msg.from,
+            text: msg.text,
+            createdAt: new Date().getTime()
+        });
+        callback();
     });
 });
 server.listen(port, () => {
