@@ -34,11 +34,18 @@ socket.on('newlocationMessage', function(msg) {
     scrollToBottom();
 });
 
+socket.on('updateUserList', function(users) {
+    $('#users').append(ol);
+    var ol = $('<ol></ol>');
+    users.forEach(user => {
+        ol.append($(`<li>${user}</li>`));
+    });
+    $('#users').html(ol);
+});
 $('#message-form').on('submit', function(e) {
     e.preventDefault();
     var messageTextBox = $('[name=message]');
     socket.emit('createMessage', {
-        from: 'User',
         text: messageTextBox.val()
     }, function() {
         messageTextBox.val('');
